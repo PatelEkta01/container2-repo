@@ -1,12 +1,12 @@
 options:
   logging: CLOUD_LOGGING_ONLY
   default_logs_bucket_behavior: REGIONAL_USER_OWNED_BUCKET
-  
+
 substitutions:
   _SHORT_SHA: "latest"
 
 steps:
-  # Build and push Container 1 image //Test
+  # Build and push Container 1 image 
   - name: 'gcr.io/cloud-builders/docker'
     args:
       - 'build'
