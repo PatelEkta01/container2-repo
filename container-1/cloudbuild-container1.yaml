@@ -28,16 +28,6 @@ steps:
       - 'push'
       - 'us-central1-docker.pkg.dev/kubernetes-assignment-454116/kubernetes-assignment-repo/container1:${SHORT_SHA}'
 
-  # Deploy to GKE
-  - name: 'gcr.io/cloud-builders/kubectl'
-    args:
-      - 'set'
-      - 'image'
-      - 'deployment/container1-deployment'
-      - 'container1=us-central1-docker.pkg.dev/kubernetes-assignment-454116/kubernetes-assignment-repo/container1:${SHORT_SHA}'
-    env:
-      - 'CLOUDSDK_COMPUTE_ZONE=us-central1-a'
-      - 'CLOUDSDK_CONTAINER_CLUSTER=kubernetes-cluster'
-
+  
 images:
   - 'us-central1-docker.pkg.dev/kubernetes-assignment-454116/kubernetes-assignment-repo/container1:${SHORT_SHA}'
