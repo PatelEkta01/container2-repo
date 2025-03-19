@@ -1,0 +1,45 @@
+steps:
+  # Get the short commit SHA for tagging
+  - name: 'gcr.io/cloud-builders/git'
+    id: 'Get-Commit-SHA'
+    entrypoint: 'bash'
+    args: 
+      - '-c'
+      - |
+        echo "COMMIT_SHA=$(git rev-parse --short HEAD)" > /workspace/COMMIT_SHA
+
+  # Build and push Container 2 image
+  - name: 'gcr.io/cloud-builders/docker'
+    args: 
+      - 'build'
+      - '-t'
+      - 'us-central1-docker.pkg.dev/kubernetes-assignment-454116/kubernetes-assignment-repo/container2:latest'
+      - '-t'
+      - 'us-central1-docker.pkg.dev/kubernetes-assignment-454116/kubernetes-assignment-repo/container2:$COMMIT_SHA'
+      - '-f'
+      - 'container-2/Dockerfile'
+      - '.'
+
+  - name: 'gcr.io/cloud-builders/docker'
+    args: 
+      - 'push'
+      - 'us-central1-docker.pkg.dev/kubernetes-assignment-454116/kubernetes-assignment-repo/container2:latest'
+
+  - name: 'gcr.io/cloud-builders/docker'
+    args: 
+      - 'push'
+      - 'us-central1-docker.pkg.dev/kubernetes-assignment-454116/kubernetes-assignment-repo/container2:$COMMIT_SHA'
+
+  # Deploy to GKE
+  - name: 'gcr.io/cloud-builders/kubectl'
+    args: 
+      - 'set'
+      - 'image'
+      - 'deployment/container2-deployment'
+      - 'container2=us-central1-docker.pkg.dev/kubernetes-assignment-454116/kubernetes-assignment-repo/container2:$COMMIT_SHA'
+    env:
+      - 'CLOUDSDK_COMPUTE_ZONE=us-central1-a'
+      - 'CLOUDSDK_CONTAINER_CLUSTER=kubernetes-cluster'
+
+images:
+  - 'us-central1-docker.pkg.dev/kubernetes-assignment-454116/kubernetes-assignment-repo/container2:$COMMIT_SHA'
