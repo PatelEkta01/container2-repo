@@ -13,7 +13,8 @@ steps:
       - '-t'
       - 'us-central1-docker.pkg.dev/kubernetes-assignment-454116/kubernetes-assignment-repo/container1:latest'
       - '-t'
-      - 'us-central1-docker.pkg.dev/kubernetes-assignment-454116/kubernetes-assignment-repo/container1:${_SHORT_SHA}'  # ✅ Fix: Use _SHORT_SHA
+      - 'us-central1-docker.pkg.dev/kubernetes-assignment-454116/kubernetes-assignment-repo/container1:$(_SHORT_SHA)'  # ✅ Fix: Correct syntax for substitutions
+
       - '-f'
       - 'container-1/Dockerfile'
       - '.'
@@ -30,4 +31,4 @@ steps:
 
   
 images:
-  - 'us-central1-docker.pkg.dev/kubernetes-assignment-454116/kubernetes-assignment-repo/container1:${_SHORT_SHA}'  # ✅ Fix: Use _SHORT_SHA
+  - 'us-central1-docker.pkg.dev/kubernetes-assignment-454116/kubernetes-assignment-repo/container1:$(_SHORT_SHA)'  # ✅ Fix: Use correct syntax
