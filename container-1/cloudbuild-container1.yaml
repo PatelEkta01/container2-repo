@@ -3,7 +3,7 @@ options:
   default_logs_bucket_behavior: REGIONAL_USER_OWNED_BUCKET
 
 substitutions:
-  _SHORT_SHA: "latest"
+  _SHORT_SHA: "latest"  # ✅ Keep this, but reference it correctly below
 
 steps:
   # Build and push Container 1 image 
@@ -13,21 +13,21 @@ steps:
       - '-t'
       - 'us-central1-docker.pkg.dev/kubernetes-assignment-454116/kubernetes-assignment-repo/container1:latest'
       - '-t'
-      - 'us-central1-docker.pkg.dev/kubernetes-assignment-454116/kubernetes-assignment-repo/container1:${SHORT_SHA}'
+      - 'us-central1-docker.pkg.dev/kubernetes-assignment-454116/kubernetes-assignment-repo/container1:${_SHORT_SHA}'  # ✅ Fix: Use _SHORT_SHA
       - '-f'
       - 'container-1/Dockerfile'
       - '.'
 
   - name: 'gcr.io/cloud-builders/docker'
-    args:
+    args: 
       - 'push'
       - 'us-central1-docker.pkg.dev/kubernetes-assignment-454116/kubernetes-assignment-repo/container1:latest'
 
   - name: 'gcr.io/cloud-builders/docker'
     args:
       - 'push'
-      - 'us-central1-docker.pkg.dev/kubernetes-assignment-454116/kubernetes-assignment-repo/container1:${SHORT_SHA}'
+      - 'us-central1-docker.pkg.dev/kubernetes-assignment-454116/kubernetes-assignment-repo/container1:${_SHORT_SHA}'  # ✅ Fix: Use _SHORT_SHA
 
   
 images:
-  - 'us-central1-docker.pkg.dev/kubernetes-assignment-454116/kubernetes-assignment-repo/container1:${SHORT_SHA}'
+  - 'us-central1-docker.pkg.dev/kubernetes-assignment-454116/kubernetes-assignment-repo/container1:${_SHORT_SHA}'  # ✅ Fix: Use _SHORT_SHA
